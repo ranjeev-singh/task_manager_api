@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       resources :users
       resources :task_statuses
       resources :subscriptions, only: [:show]
+      resources :email_notifications, only: [:create]
     end
   end
 end

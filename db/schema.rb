@@ -10,9 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_05_14_084403) do
+ActiveRecord::Schema[7.1].define(version: 2025_05_22_103702) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "email_notifications", force: :cascade do |t|
+    t.string "email"
+    t.string "subject"
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "subscription_notes", force: :cascade do |t|
+    t.integer "subscription_id"
+    t.integer "user_id"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.decimal "amount"
+    t.string "external_id"
+    t.string "currency"
+    t.text "remarks"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_subscriptions_on_user_id"
+  end
 
   create_table "task_statuses", force: :cascade do |t|
     t.string "status"
@@ -31,5 +59,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_14_084403) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "subscriptions", "users"
   add_foreign_key "task_statuses", "users"
 end
